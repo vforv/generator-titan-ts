@@ -24,3 +24,4 @@ SERVICE_PORT=3000
 -- Integrate database, test, dev, prod
 -- Create env dot and update it in templates
 -- Docker file update
+-- Integrate it in titan-cli
