@@ -1,0 +1,9 @@
+{
+  "generator-node": {
+    "promptValues": {
+      "authorName": "Vladimir Djukic",
+      "authorEmail": "vladimir@amerbank.com",
+      "authorUrl": "amerbank.com"
+    }
+  }
+}
