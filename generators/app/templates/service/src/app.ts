@@ -36,16 +36,7 @@ export class FastifyServer {
         this.router.registerRoutes(this.fastify);
     }
 
-    public startServer() {
-        this.fastify.listen(3030, (error) => {
-            if (error) {
-                throw error;
-            }
-
-            doc.doc();
-
-            const port: any = this.fastify.server;
-            Pino().info(`Server listening on port ${port.address().port}.`);
-        });
+    public server() {
+        return this.fastify;
     }
-}
+}  /* istanbul ignore next */

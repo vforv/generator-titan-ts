@@ -36,7 +36,7 @@ export class RouterRoute implements IRouterInterface {
     }
 
     private update(server: Fastify.FastifyInstance<{}, {}, {}>) {
-        server.post('/update', validator.<%= serviceValidatorConst %>_UPDATE_VALIDATOR, (request, reply) => {
+        server.put('/update', validator.<%= serviceValidatorConst %>_UPDATE_VALIDATOR, (request, reply) => {
             const logic = Container.get<ICRUD<I<%= serviceCC %>DataModel>>('<%= serviceName %>.logic');
 
             reply.send(logic.update(request.body));
@@ -44,7 +44,7 @@ export class RouterRoute implements IRouterInterface {
     }
 
     private delete(server: Fastify.FastifyInstance<{}, {}, {}>) {
-        server.post('/delete/:id', validator.<%= serviceValidatorConst %>_ID_VALIDATOR, (request, reply) => {
+        server.delete('/delete/:id', validator.<%= serviceValidatorConst %>_ID_VALIDATOR, (request, reply) => {
             const logic = Container.get<ICRUD<I<%= serviceCC %>DataModel>>('<%= serviceName %>.logic');
 
             reply.send(logic.delete(request.params.id));

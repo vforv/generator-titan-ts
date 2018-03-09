@@ -3,13 +3,38 @@
   "version": "1.0.0",
   "description": "<%= serviceDesc %>",
   "main": "service.ts",
+  "nyc": {
+    "check-coverage": true,
+    "lines": <%= coverage %>,
+    "statements": <%= coverage %>,
+    "functions": <%= coverage %>,
+    "branches": <%= coverage %>,
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "coverage",
+      "doc",
+      "src/doc.ts",
+      "src/service.ts",
+      "src/provider.ts"
+    ],
+    "reporter": [
+      "html"
+    ],
+    "all": true
+  },
   "scripts": {
-    "test": "npm test",
+    "test": "nyc tap ./test/**/*.ts --coverage",
     "dev": "nodemon",
     "ts-node": "npm run lint && ts-node ./src/service.ts",
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
-    "doc": "",
-    "build": "tsc"
+    "doc": "npm test && ts-node ./src/doc.ts",
+    "postdoc": "concurrently 'http-server ./coverage -o' 'http-server ./doc -o -p 8081'",
+    "build": "tsc",
+    "pretest": "sudo sh ./prem.sh"
   },
   "author": "<%= serviceAuthor %>",
   "license": "ISC",
@@ -26,6 +51,11 @@
     "@types/joi": "^13.0.5",
     "@types/node": "^9.4.6",
     "@types/pino": "^4.7.1",
+    "tslint": "^5.9.1",
+    "nyc": "^11.4.1",
+    "tap": "^11.1.1",
+    "concurrently": "^3.5.1",
+    "http-server": "^0.11.1",
     "bootprint": "^1.0.2",
     "bootprint-openapi": "^1.1.0",
     "fastify-swagger": "^0.5.0",

@@ -10,9 +10,20 @@
 
 ## Documentation
 
-To add documentation c/p code bellow and replace github url to the doc/index.html file in your service.
+To generate documentations run ```npm run doc```
 
-For documentaion click [HERE](http://htmlpreview.github.io/?https://github.com/vforv/titan-ts-test/blob/master/doc/index.html)
+** API Documentation
+
+To add api documentation c/p code bellow and replace github url to the doc/index.html file in your service.
+
+For API documentaion click [HERE](http://htmlpreview.github.io/?https://github.com/vforv/titan-ts-test/blob/master/doc/index.html)
+
+** Code coverage
+
+To add code coverage report c/p code bellow and replace github url to the doc/index.html file in your service.
+
+For code coverage report click [HERE](http://htmlpreview.github.io/?https://github.com/vforv/titan-ts-test/blob/master/coverage/index.html)
+
 
 ## Environment Variables
 

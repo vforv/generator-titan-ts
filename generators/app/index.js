@@ -34,6 +34,12 @@ module.exports = class extends Generator {
         name: 'crud',
         message: 'Is this CRUD service?'
       },
+      {
+        type: 'input',
+        name: 'coverage',
+        message: 'Enter how much (%) should be minimum for this service? (Put number from 1-100)',
+        default: '100'
+      }
     ];
 
     return this.prompt(prompts).then(props => {
@@ -55,6 +61,16 @@ module.exports = class extends Generator {
         this.log(chalk.red('Service description should be at last 20 char long.'));
         process.exit();
       }
+
+      if (parseInt(this.props.coverage) > 100 || parseInt(this.props.coverage) < 1) {
+        this.log(chalk.red('Coverage should be between 1 and 100'));
+        process.exit();
+      }
+
+      // if (parseInt(this.props.coverage) > 100 || parseInt(this.props.coverage) < 1) {
+      //   this.log(chalk.red('Coverage should be between 1 and 100'));
+      //   process.exit();
+      // }
 
     });
   }
@@ -114,6 +130,12 @@ module.exports = class extends Generator {
 
     // CRUD
     if (this.props.crud) {
+      this.fs.copyTpl(
+        this.templatePath('service/test/_crud.ts'),
+        this.destinationPath(`titan-${serviceName}/test/crud.ts`),
+        pro
+      );
+
       this.fs.copyTpl(
         this.templatePath('service/src/logic/_index.ts'),
         this.destinationPath(`titan-${serviceName}/src/logic/index.ts`),
@@ -177,6 +199,12 @@ module.exports = class extends Generator {
       this.fs.copyTpl(
         this.templatePath('service/src/route/_routes1.ts'),
         this.destinationPath(`titan-${serviceName}/src/route/routes.ts`),
+        pro
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('service/test/_index.ts'),
+        this.destinationPath(`titan-${serviceName}/test/index.ts`),
         pro
       );
     }

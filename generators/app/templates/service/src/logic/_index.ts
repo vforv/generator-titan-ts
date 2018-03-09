@@ -29,9 +29,4 @@ export class <%= serviceCC %>Logic implements ICRUD<I<%= serviceCC %>DataModel> 
 
         return deleteLogic(modelId);
     }
-
-    public readOne(modelId: string | number): { result: I<%= serviceCC %>DataModel } {
-
-        return readOneLogic(modelId);
-    }
 }

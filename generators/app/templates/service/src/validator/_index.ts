@@ -54,6 +54,7 @@ const response = {
                 type: 'object',
                 properties: {
                     example: { type: 'string' },
+                    id: { type: 'string' },
                 },
             },
         },
@@ -77,13 +78,16 @@ const response1 = {
 
 const responseList = {
     200: {
-        description: 'Successful response result is array of objects',
+        description: 'Successful response',
         type: 'object',
         properties: {
             result: {
-                type: 'object',
-                properties: {
-                    example: { type: 'string' },
+                type: 'array',
+                items: {
+                    type: 'object',
+                    properties: {
+                        example: { type: 'string' },
+                    },
                 },
             },
         },
