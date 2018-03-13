@@ -32,6 +32,7 @@ SERVICE_PORT=3000
 ## TODO
 
 -- Create generators for tests
+-- Gen .circleci
 -- Integrate database, test, dev, prod
 -- Create env dot and update it in templates
 -- Docker file update

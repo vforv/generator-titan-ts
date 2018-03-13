@@ -33,7 +33,8 @@
     "lint": "tslint -c tslint.json 'src/**/*.ts'",
     "doc": "npm test && ts-node ./src/doc.ts",
     "postdoc": "concurrently 'http-server ./coverage -o' 'http-server ./doc -o -p 8081'",
-    "build": "tsc",
+    "start": "node dist/service.js",
+    "prestart": "tsc --rootDir ./src",
     "pretest": "sudo sh ./prem.sh"
   },
   "author": "<%= serviceAuthor %>",

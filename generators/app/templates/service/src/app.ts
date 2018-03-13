@@ -1,12 +1,10 @@
 import * as Fastify from 'fastify';
 import * as Fb from 'fastify-formbody';
 import * as Sw from 'fastify-swagger';
-import * as Pino from 'pino';
 
 import { Service } from 'typedi';
 import { Router } from './route';
 import { IRouterInterface } from './route/routes';
-import * as doc from './doc';
 
 @Service('server')
 export class FastifyServer {
