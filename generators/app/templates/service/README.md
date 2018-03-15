@@ -54,4 +54,3 @@ For code coverage report click [HERE](http://htmlpreview.github.io/?https://gith
 
 -- Gen .circleci folder
 -- Docker file update
--- Integrate it in titan-cli
