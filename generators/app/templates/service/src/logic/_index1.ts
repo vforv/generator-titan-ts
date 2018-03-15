@@ -6,7 +6,7 @@ import { I<%= serviceCC %>Repository } from '../model/infrastructure/service';
 @Service('<%= serviceName %>.logic')
 export class <%= serviceCC %>Logic implements I<%= serviceCC %>Repository {
 
-    public serviceMethod(id: string): { result: I<%= serviceCC %>DataModel } {
+    public serviceMethod(id: string): Promise<{ result: I<%= serviceCC %>DataModel }> {
 
         return serviceLogic(id);
     }

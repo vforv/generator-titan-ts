@@ -10,22 +10,27 @@ import { readOneLogic } from './read-one.logic';
 @Service('<%= serviceName %>.logic')
 export class <%= serviceCC %>Logic implements ICRUD<I<%= serviceCC %>DataModel> {
 
-    public create(model: I<%= serviceCC %>DataModel): { result: I<%= serviceCC %>DataModel } {
+    public create(model: I<%= serviceCC %>DataModel): Promise<{ result: I<%= serviceCC %>DataModel }> {
 
         return createLogic(model);
     }
 
-    public read(from: number, size: number): { result: I<%= serviceCC %>DataModel[] } {
+    public read(from: number, size: number): Promise<{ result: I<%= serviceCC %>DataModel[] }> {
 
         return readLogic(from, size);
     }
 
-    public update(model: I<%= serviceCC %>DataModel): { result: I<%= serviceCC %>DataModel } {
+    public readOne(id: string): Promise<{ result: I<%= serviceCC %>DataModel }> {
 
-        return updateLogic(model);
+        return readOneLogic(id);
     }
 
-    public delete(modelId: string | number): { result: I<%= serviceCC %>DataModel } {
+    public update(id: string, model: I<%= serviceCC %>DataModel): Promise<{ result: I<%= serviceCC %>DataModel }> {
+
+        return updateLogic(id, model);
+    }
+
+    public delete(modelId: string): Promise<{ result: I<%= serviceCC %>DataModel }> {
 
         return deleteLogic(modelId);
     }

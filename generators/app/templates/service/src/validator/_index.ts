@@ -70,6 +70,7 @@ const response1 = {
                 type: 'object',
                 properties: {
                     example: { type: 'string' },
+                    id: { type: 'string' },
                 },
             },
         },
@@ -87,6 +88,7 @@ const responseList = {
                     type: 'object',
                     properties: {
                         example: { type: 'string' },
+                        id: { type: 'string' },
                     },
                 },
             },

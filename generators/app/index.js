@@ -105,6 +105,18 @@ module.exports = class extends Generator {
     );
 
     this.fs.copyTpl(
+      this.templatePath('service/_env'),
+      this.destinationPath(`titan-${serviceName}/.env`),
+      pro
+    );
+
+    this.fs.copyTpl(
+      this.templatePath('service/_env-test'),
+      this.destinationPath(`titan-${serviceName}/.env-test`),
+      pro
+    );
+
+    this.fs.copyTpl(
       this.templatePath('service/src/model/data/_model.ts'),
       this.destinationPath(`titan-${serviceName}/src/model/data/${serviceName}-data.model.ts`),
       pro
@@ -133,6 +145,12 @@ module.exports = class extends Generator {
       this.fs.copyTpl(
         this.templatePath('service/test/_crud.ts'),
         this.destinationPath(`titan-${serviceName}/test/crud.ts`),
+        pro
+      );
+
+      this.fs.copyTpl(
+        this.templatePath('service/test/_route-errors.ts'),
+        this.destinationPath(`titan-${serviceName}/test/route-errors.ts`),
         pro
       );
 

@@ -5,12 +5,19 @@ import * as Sw from 'fastify-swagger';
 import { Service } from 'typedi';
 import { Router } from './route';
 import { IRouterInterface } from './route/routes';
+import * as dotenv from 'dotenv';
 
 @Service('server')
 export class FastifyServer {
     public fastify: Fastify.FastifyInstance<{}, {}, {}>;
 
-    constructor(@Router() public router: IRouterInterface) {
+    constructor( @Router() public router: IRouterInterface) {
+        /* istanbul ignore else  */
+        if (process.env.TEST) {
+            dotenv.config({ path: '.env-test' });
+        } else if (process.env.DEV) {
+            dotenv.config();
+        }
         this.fastify = Fastify();
 
         // Register plugins

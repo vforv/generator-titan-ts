@@ -3,6 +3,7 @@ import { Container } from 'typedi';
 import * as validator from '../validator';
 import { ICRUD } from '../model/infrastructure/crud';
 import {I<%= serviceCC %>DataModel} from '../model/data/<%= serviceName %>-data.model';
+import * as error from 'http-errors';
 
 export interface IRouterInterface {
 
@@ -17,13 +18,20 @@ export class RouterRoute implements IRouterInterface {
         this.craete(server);
         this.update(server);
         this.delete(server);
+        this.readOne(server);
     }
 
     private craete(server: Fastify.FastifyInstance<{}, {}, {}>) {
         server.post('/create', validator.<%= serviceValidatorConst %>_CREATE_VALIDATOR, (request, reply) => {
             const logic = Container.get<ICRUD<I<%= serviceCC %>DataModel>>('<%= serviceName %>.logic');
 
-            reply.send(logic.create(request.body));
+            logic.create(request.body)
+                .then((result) => {
+                    reply.send(result);
+                })
+                .catch((err: any) => {
+                    reply.send(new error.InternalServerError());
+                });
         });
     }
 
@@ -31,7 +39,27 @@ export class RouterRoute implements IRouterInterface {
         server.get('/read/:from/:size', validator.<%= serviceValidatorConst %>_READ_VALIDATOR, (request, reply) => {
             const logic = Container.get<ICRUD<I<%= serviceCC %>DataModel>>('<%= serviceName %>.logic');
 
-            reply.send(logic.read(parseInt(request.params.from, 10), parseInt(request.params.size, 10)));
+            logic.read(parseInt(request.params.from, 10), parseInt(request.params.size, 10))
+                .then((result) => {
+                    reply.send(result);
+                })
+                .catch((err: any) => {
+                    reply.send(new error.InternalServerError());
+                });
+        });
+    }
+
+    private readOne(server: Fastify.FastifyInstance<{}, {}, {}>) {
+        server.get('/entity/:id', validator.PING_ID_VALIDATOR, (request, reply) => {
+            const logic = Container.get<ICRUD<I<%= serviceCC %>DataModel>>('<%= serviceName %>.logic');
+
+            logic.readOne(request.params.id)
+                .then((result) => {
+                    reply.send(result);
+                })
+                .catch((err: any) => {
+                    reply.send(new error.InternalServerError());
+                });
         });
     }
 
@@ -39,7 +67,13 @@ export class RouterRoute implements IRouterInterface {
         server.put('/update', validator.<%= serviceValidatorConst %>_UPDATE_VALIDATOR, (request, reply) => {
             const logic = Container.get<ICRUD<I<%= serviceCC %>DataModel>>('<%= serviceName %>.logic');
 
-            reply.send(logic.update(request.body));
+            logic.update(request.body.id, { example: request.body.example })
+                .then((result) => {
+                    reply.send(result);
+                })
+                .catch((err: any) => {
+                    reply.send(new error.InternalServerError());
+                });
         });
     }
 
@@ -47,7 +81,13 @@ export class RouterRoute implements IRouterInterface {
         server.delete('/delete/:id', validator.<%= serviceValidatorConst %>_ID_VALIDATOR, (request, reply) => {
             const logic = Container.get<ICRUD<I<%= serviceCC %>DataModel>>('<%= serviceName %>.logic');
 
-            reply.send(logic.delete(request.params.id));
+            logic.delete(request.params.id)
+                .then((result) => {
+                    reply.send(result);
+                })
+                .catch((err: any) => {
+                    reply.send(new error.InternalServerError());
+                });
         });
     }
 }
