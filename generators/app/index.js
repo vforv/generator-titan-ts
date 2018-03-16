@@ -47,6 +47,11 @@ module.exports = class extends Generator {
 
       this.props = props;
 
+      if (this.props.serviceName.length > 21) {
+        this.log(chalk.red('Service name should be less then 22 char in length.'));
+        process.exit();
+      }
+
       if (/^[a-z- ]*$/.test(this.props.serviceName) == false) {
         this.log(chalk.red('Service name must be lowecase and multiple words should be separated with (-).'));
         process.exit();

@@ -9,23 +9,22 @@ const server: any = Container.get('server');
 const db: any = Container.get('mongo.concreate.factory');
 const fastify = server.server();
 
-fastify.listen(process.env.PORT, (error: any) => {
-    if (error) {
-        throw error;
-    }
+db
+    .connection()
+    .then((resp: any) => {
+        /**
+         * Leave just fastify.listen if you are not using database.
+         */
+        fastify.listen(process.env.PORT, (error: any) => {
+            if (error) {
+                throw error;
+            }
 
-    /**
-     * Remove this if you are not using database.
-     */
-    db
-        .connection()
-        .then((resp: any) => {
+            const port: any = fastify.server;
+            Pino().info(`Server listening on port ${port.address().port}.`);
             Pino().info(`DB connected.`);
-        })
-        .catch((err: any) => {
-            Pino().info(err);
         });
-
-    const port: any = fastify.server;
-    Pino().info(`Server listening on port ${port.address().port}.`);
-});
+    })
+    .catch((err: any) => {
+        Pino().info(err);
+    });

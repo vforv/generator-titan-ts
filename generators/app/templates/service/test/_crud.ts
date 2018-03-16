@@ -55,7 +55,7 @@ test(`Test read`, (t) => {
         .then((resp: any) => {
             fastify.inject({
                 method: 'GET',
-                url: '/read/2/1'
+                url: '/read/2'
             }, (err, response) => {
                 t.error(err)
                 t.strictEqual(response.statusCode, 200);

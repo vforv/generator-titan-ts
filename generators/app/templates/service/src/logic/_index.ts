@@ -15,9 +15,9 @@ export class <%= serviceCC %>Logic implements ICRUD<I<%= serviceCC %>DataModel> 
         return createLogic(model);
     }
 
-    public read(from: number, size: number): Promise<{ result: I<%= serviceCC %>DataModel[] }> {
+    public read(size: number, prev?: string, next?: string): Promise<{ result: I<%= serviceCC %>DataModel[] }> {
 
-        return readLogic(from, size);
+        return readLogic(size, prev, next);
     }
 
     public readOne(id: string): Promise<{ result: I<%= serviceCC %>DataModel }> {
@@ -25,7 +25,10 @@ export class <%= serviceCC %>Logic implements ICRUD<I<%= serviceCC %>DataModel> 
         return readOneLogic(id);
     }
 
-    public update(id: string, model: I<%= serviceCC %>DataModel): Promise<{ result: I<%= serviceCC %>DataModel }> {
+    public update(
+        id: string,
+        model: I<%= serviceCC %>DataModel,
+    ): Promise<{ result: I<%= serviceCC %>DataModel }> {
 
         return updateLogic(id, model);
     }

@@ -7,6 +7,7 @@ export * from '../src/provider';
 import { test } from "tap";
 import { Container } from 'typedi';
 import { IAbstractDbFactory } from '../src/model/infrastructure/db';
+import { MongoFactory } from '../src/db/mongo/mongo.factory';
 const mongo: IAbstractDbFactory<any> = Container.get('mongo.concreate.factory');
 let id: string;
 dotenv.config({ path: '.env-test' });
@@ -36,13 +37,22 @@ test(`Mongo read`, (t) => {
         .connection()
         .then((resp: any) => {
 
-            const query = mongo.find('example', {});
-            query.then((response) => {
-                
+            const query = mongo.find('example', {}, 2);
+            query.then((response: any) => {
                 t.type(response.result, 'object');
+
                 resp.close();
             })
         });
+});
+
+test(`Mongo next or prev`, (t) => {
+    t.plan(2);
+    const mongoFactory: any = new MongoFactory();
+    const newObj = mongoFactory.nextOrPrev({}, 'test', null);
+    t.strictEqual(newObj.previous, 'test');
+    const newObj1 = mongoFactory.nextOrPrev({}, null, 'test');
+    t.strictEqual(newObj1.next, 'test');
 });
 
 test(`Mongo update`, (t) => {

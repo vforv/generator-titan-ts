@@ -1,1 +1,1 @@
-export const DB_NAME = <%= serviceName %>;
+export const DB_NAME = '<%= serviceName %>';

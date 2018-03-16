@@ -1,11 +1,12 @@
 import { MongoClient, Db, ObjectID } from 'mongodb';
 import { Service } from 'typedi';
 import { IModel } from '../../model/infrastructure/db';
+import * as MongoPaging from 'mongo-cursor-pagination';
 
 @Service('mongo.factory')
 export class MongoFactory<T> implements IModel<T> {
 
-    public state: Db;
+    public state: any;
     public connection: any;
 
     public connect(url: string, dbName: string): Promise<MongoClient> {
@@ -66,13 +67,35 @@ export class MongoFactory<T> implements IModel<T> {
             });
     }
 
-    public find(collection: string, query: any): Promise<{ result: T[] }> {
-        const cursor: any = this.state.collection(collection).find(query).toArray();
+    public find(collection: string, query: any, limit: number, prev?: string, next?: string): Promise<{ result: T[] }> {
 
-        return cursor
-            .then((results: T[]) => {
+        const cursor: any = this.state.collection(collection);
+
+        const pagQ: any = {
+            query,
+            limit,
+        };
+
+        const prevNext = this.nextOrPrev(pagQ, prev, next);
+
+        return MongoPaging.find(cursor, prevNext)
+            .then((data: { results: any, previous: string, next: string, hasPrevious: boolean, hasNext: boolean }) => {
+                const result = data.results.map((item: any) => {
+
+                    const newItem = {
+                        ...item,
+                        id: item._id,
+                    };
+
+                    return newItem;
+                });
+
                 return {
-                    result: results,
+                    result,
+                    previous: data.previous,
+                    next: data.next,
+                    hasPrevious: data.hasPrevious,
+                    hasNext: data.hasNext,
                 };
             })
             .catch(/* istanbul ignore next */(err: any) => {
@@ -114,5 +137,15 @@ export class MongoFactory<T> implements IModel<T> {
             .catch(/* istanbul ignore next */(err: any) => {
                 throw new Error(err);
             });
+    }
+
+    private nextOrPrev(pagQ: any, prev?: string, next?: string) {
+        if (prev && !next) {
+            pagQ.previous = prev;
+        } else if (next && !prev) {
+            pagQ.next = next;
+        }
+
+        return pagQ;
     }
 }

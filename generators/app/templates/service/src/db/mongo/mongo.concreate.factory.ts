@@ -20,8 +20,14 @@ export class MongoConcreateFacotry<T> implements IAbstractDbFactory<T> {
         return this.mongo.connect(host, dbName);
     }
 
-    public find(collection: string, query: any): Promise<{ result: any[]; }> {
-        return this.mongo.find(collection, query);
+    public find(
+        collection: string,
+        query: any,
+        size: number,
+        prev?: string,
+        next?: string,
+    ): Promise<{ result: any[]; }> {
+        return this.mongo.find(collection, query, size, prev, next);
     }
 
     public create(collection: string, model: object): Promise<{ result: any; }> {

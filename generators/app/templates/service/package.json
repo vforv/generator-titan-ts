@@ -31,6 +31,7 @@
     "predoc": "TEST=true nyc tap ./test/**/*.ts --coverage",
     "postdoc": "concurrently 'http-server ./coverage -o' 'http-server ./doc -o -p 8081'",
     "start": "node dist/service.js",
+    "build": "tsc --rootDir ./src",
     "prestart": "tsc --rootDir ./src",
     "pretest": "sudo sh ./prem.sh"
   },
@@ -46,6 +47,7 @@
     "pino": "^4.13.0",
     "reflect-metadata": "^0.1.12",
     "replace-once": "^1.0.0",
+    "mongo-cursor-pagination": "^6.2.0",
     "typedi": "^0.7.1"
   },
   "devDependencies": {

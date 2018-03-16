@@ -51,7 +51,7 @@ test(`Test error callback`, (t) => {
     t.tearDown(() => fastify.close());
 
     Container.set([
-        { id: "ping.logic", value: new FakeLogic() },
+        { id: '<%= serviceName %>.logic', value: new FakeLogic() },
     ]);
 
     fastify.inject({
@@ -77,7 +77,7 @@ test(`Test error callback`, (t) => {
 
     fastify.inject({
         method: 'GET',
-        url: '/read/2/1'
+        url: '/read/2'
     }, (err, response) => {
         t.error(err);
         t.strictEqual(response.statusCode, 500);

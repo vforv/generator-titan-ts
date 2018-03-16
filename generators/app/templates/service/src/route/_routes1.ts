@@ -19,7 +19,10 @@ export class RouterRoute implements IRouterInterface {
         server.get('/service/:id', validator.<%= serviceValidatorConst %>_ID_VALIDATOR, (request, reply) => {
             const logic = Container.get<I<%= serviceCC %>Repository>('<%= serviceName %>.logic');
 
-            reply.send(logic.serviceMethod(request.params.id));
+            logic.serviceMethod(request.params.id)
+                .then((result) => {
+                    return reply.send(result);
+                });
         });
     }
 }

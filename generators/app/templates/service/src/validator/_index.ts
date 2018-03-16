@@ -24,17 +24,13 @@ const updateValidator = Joi.object().keys({
     .description('Send update object');
 
 const readValidator = Joi.object().keys({
-    from: Joi
-        .string()
-        .required()
-        .description('From which entity we want to take items'),
     size: Joi
         .string()
         .required()
         .description('Number of entities per page'),
 })
     .required()
-    .description('List all items with pagination');
+    .description('List all items with pagination to go to next or prev page add query params next or previous');
 
 const idValidator = Joi.object().keys({
     id: Joi
@@ -92,6 +88,10 @@ const responseList = {
                     },
                 },
             },
+            previous: { type: 'string' },
+            next: { type: 'string' },
+            hasPrevious: { type: 'boolean' },
+            hasNext: { type: 'boolean' },
         },
     },
 };

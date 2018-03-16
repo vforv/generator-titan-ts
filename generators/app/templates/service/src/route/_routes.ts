@@ -36,10 +36,10 @@ export class RouterRoute implements IRouterInterface {
     }
 
     private read(server: Fastify.FastifyInstance<{}, {}, {}>) {
-        server.get('/read/:from/:size', validator.<%= serviceValidatorConst %>_READ_VALIDATOR, (request, reply) => {
+        server.get('/read/:size', validator.<%= serviceValidatorConst %>_READ_VALIDATOR, (request, reply) => {
             const logic = Container.get<ICRUD<I<%= serviceCC %>DataModel>>('<%= serviceName %>.logic');
 
-            logic.read(parseInt(request.params.from, 10), parseInt(request.params.size, 10))
+            logic.read(parseInt(request.params.size, 10), request.query.next, request.query.previous)
                 .then((result) => {
                     reply.send(result);
                 })
@@ -50,7 +50,7 @@ export class RouterRoute implements IRouterInterface {
     }
 
     private readOne(server: Fastify.FastifyInstance<{}, {}, {}>) {
-        server.get('/entity/:id', validator.PING_ID_VALIDATOR, (request, reply) => {
+        server.get('/entity/:id', validator.<%= serviceValidatorConst %>_ID_VALIDATOR, (request, reply) => {
             const logic = Container.get<ICRUD<I<%= serviceCC %>DataModel>>('<%= serviceName %>.logic');
 
             logic.readOne(request.params.id)
