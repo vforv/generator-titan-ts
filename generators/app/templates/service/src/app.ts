@@ -13,11 +13,10 @@ export class FastifyServer {
 
     constructor( @Router() public router: IRouterInterface) {
         /* istanbul ignore else  */
-        if (process.env.TEST) {
-            dotenv.config({ path: '.env-test' });
-        } else if (process.env.DEV) {
+        if (!process.env.CLUSTER) {
             dotenv.config();
         }
+
         this.fastify = Fastify();
 
         // Register plugins

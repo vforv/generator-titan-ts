@@ -12,11 +12,11 @@ Vladimir Djukic
 
 Before you run server it is importante to set up env variables.
 
-There are 2 files .env and .env-test
+.env file is just for development
 
-.env file is for development and .env-test is for tests.
+In production env variables should be provided by cluster.
 
-.env files are not ment for production
+Also in production there should be CLUSTER=true env variable for service to work properly.
 
 ## Database
 
@@ -54,7 +54,7 @@ To test service run:
 
 ## Production
 
-For production it is important env variables exists in cluster.
+For production it is important env variables exists in cluster. And CLUSTER=true env variable.
 
 To build and start app run:
 

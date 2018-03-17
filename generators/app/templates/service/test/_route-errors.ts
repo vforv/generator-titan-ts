@@ -1,10 +1,9 @@
-#!/usr/bin/env ts-node
-
-import 'reflect-metadata';
-export * from '../src/provider';
+import * as deps from './deps';
 import { Container } from 'typedi';
-import { test } from 'tap';
+import * as chai from 'chai';
 
+const expect = chai.expect;
+const assert = chai.assert;
 
 class FakeLogic {
     public create(model: any): any {
@@ -42,67 +41,60 @@ class FakeLogic {
         });
     }
 }
+describe('Errors routes', () => {
+    it(`Test error callback`, (done) => {
 
-test(`Test error callback`, (t) => {
-    t.plan(15);
-    const svc: any = Container.get('server');
-    const fastify = svc.server();
+        Container.set([
+            { id: '<%= serviceName %>.logic', value: new FakeLogic() },
+        ]);
 
-    t.tearDown(() => fastify.close());
+        deps.fastify.inject({
+            method: 'GET',
+            url: `/entity/132`,
+        }, (err, response) => {
+            assert.strictEqual(response.statusCode, 500);
+            assert.strictEqual(response.headers['content-type'], 'application/json');
+        });
 
-    Container.set([
-        { id: '<%= serviceName %>.logic', value: new FakeLogic() },
-    ]);
+        deps.fastify.inject({
+            method: 'POST',
+            url: '/create',
+            payload: {
+                example: 'test'
+            }
+        }, (err, response) => {
+            assert.strictEqual(response.statusCode, 500);
+            assert.strictEqual(response.headers['content-type'], 'application/json');
+        });
 
-    fastify.inject({
-        method: 'GET',
-        url: `/entity/132`,
-    }, (err, response) => {
-        t.error(err);
-        t.strictEqual(response.statusCode, 500);
-        t.strictEqual(response.headers['content-type'], 'application/json');
+        deps.fastify.inject({
+            method: 'GET',
+            url: '/read/2'
+        }, (err, response) => {
+            assert.strictEqual(response.statusCode, 500);
+            assert.strictEqual(response.headers['content-type'], 'application/json');
+        });
+
+        deps.fastify.inject({
+            method: 'PUT',
+            url: '/update',
+            payload: {
+                example: 'test-updated',
+                id: 'id'
+            }
+        }, (err, response) => {
+            assert.strictEqual(response.statusCode, 500);
+            assert.strictEqual(response.headers['content-type'], 'application/json');
+        });
+
+        deps.fastify.inject({
+            method: 'DELETE',
+            url: `/delete/123`,
+        }, (err, response) => {
+            assert.strictEqual(response.statusCode, 500);
+            assert.strictEqual(response.headers['content-type'], 'application/json');
+            done();
+        });
     });
 
-    fastify.inject({
-        method: 'POST',
-        url: '/create',
-        payload: {
-            example: 'test'
-        }
-    }, (err, response) => {
-        t.error(err);
-        t.strictEqual(response.statusCode, 500);
-        t.strictEqual(response.headers['content-type'], 'application/json');
-    });
-
-    fastify.inject({
-        method: 'GET',
-        url: '/read/2'
-    }, (err, response) => {
-        t.error(err);
-        t.strictEqual(response.statusCode, 500);
-        t.strictEqual(response.headers['content-type'], 'application/json');
-    });
-
-    fastify.inject({
-        method: 'PUT',
-        url: '/update',
-        payload: {
-            example: 'test-updated',
-            id: 'id'
-        }
-    }, (err, response) => {
-        t.error(err);
-        t.strictEqual(response.statusCode, 500);
-        t.strictEqual(response.headers['content-type'], 'application/json');
-    });
-
-    fastify.inject({
-        method: 'DELETE',
-        url: `/delete/123`,
-    }, (err, response) => {
-        t.error(err);
-        t.strictEqual(response.statusCode, 500);
-        t.strictEqual(response.headers['content-type'], 'application/json');
-    });
-});
+})

@@ -9,11 +9,11 @@ export class MongoConcreateFacotry<T> implements IAbstractDbFactory<T> {
 
     constructor( @Inject('mongo.factory') public mongo: IModel<any>) { }
 
-    public connection(): Promise<MongoClient> {
-        const str: any = process.env.MONGO_HOST;
+    public connection(unsetHost: string, username: string, password: string): Promise<MongoClient> {
+        const str: any = unsetHost;
         const dbName: any = DB_NAME;
         const find = ['PASSWORD', 'USERNAME', 'DATABASE'];
-        const replace = [process.env.MONGO_PASSWORD, process.env.MONGO_USERNAME, dbName];
+        const replace = [password, username, dbName];
 
         const host = replaceOnce(str, find, replace, 'gi');
 

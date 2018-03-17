@@ -11,7 +11,7 @@ export interface IModel<T> {
 }
 
 export interface IAbstractDbFactory<T> {
-    connection(): Promise<MongoClient>;
+    connection(unsetHost: string, username: string, password: string): Promise<MongoClient>;
     find(collection: string, query: any, size: number, prev?: string, next?: string): Promise<{ result: T[] }>;
     create(collection: string, model: object): Promise<{ result: T }>;
     update(collection: string, id: string, model: object): Promise<{ result: T }>;

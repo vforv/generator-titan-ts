@@ -10,7 +10,11 @@ const db: any = Container.get('mongo.concreate.factory');
 const fastify = server.server();
 
 db
-    .connection()
+    .connection(
+    process.env.MONGO_HOST_DEV,
+    process.env.MONGO_USERNAME_DEV,
+    process.env.MONGO_PASSWORD_DEV,
+    )
     .then((resp: any) => {
         /**
          * Leave just fastify.listen if you are not using database.
